@@ -1,5 +1,9 @@
 import { WORDS } from "./words.js";
 
+const green = "#95de64";
+const yellow = "#fff566";
+const gray = "#d9d9d9";
+
 const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
@@ -29,11 +33,11 @@ function shadeKeyBoard(letter, color) {
   for (const elem of document.getElementsByClassName("keyboard-button")) {
     if (elem.textContent === letter) {
       let oldColor = elem.style.backgroundColor;
-      if (oldColor === "green") {
+      if (oldColor === green) {
         return;
       }
 
-      if (oldColor === "yellow" && color !== "green") {
+      if (oldColor === yellow && color !== green) {
         return;
       }
 
@@ -71,25 +75,25 @@ function checkGuess() {
     return;
   }
 
-  var letterColor = ["gray", "gray", "gray", "gray", "gray"];
+  var letterColor = [gray, gray, gray, gray, gray];
 
-  //check green
+  //check #95de64
   for (let i = 0; i < 5; i++) {
     if (rightGuess[i] == currentGuess[i]) {
-      letterColor[i] = "green";
+      letterColor[i] = green;
       rightGuess[i] = "#";
     }
   }
 
-  //check yellow
+  //check #fff566
   //checking guess letters
   for (let i = 0; i < 5; i++) {
-    if (letterColor[i] == "green") continue;
+    if (letterColor[i] == green) continue;
 
     //checking right letters
     for (let j = 0; j < 5; j++) {
       if (rightGuess[j] == currentGuess[i]) {
-        letterColor[i] = "yellow";
+        letterColor[i] = yellow;
         rightGuess[j] = "#";
       }
     }
@@ -108,7 +112,7 @@ function checkGuess() {
   }
 
   if (guessString === rightGuessString) {
-    toastr.success("You guessed right! Game over!");
+    toastr.success("Ну ты капец умная!");
     guessesRemaining = 0;
     return;
   } else {
@@ -174,7 +178,7 @@ document.addEventListener("keyup", (e) => {
     return;
   }
 
-  let found = pressedKey.match(/[a-z]/gi);
+  let found = pressedKey.match(/[а-яё]/gi);
   if (!found || found.length > 1) {
     return;
   } else {
@@ -190,8 +194,12 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
   }
   let key = target.textContent;
 
-  if (key === "Del") {
+  if (key === "<") {
     key = "Backspace";
+  }
+
+  if (key === "↩") {
+    key = "Enter";
   }
 
   document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
